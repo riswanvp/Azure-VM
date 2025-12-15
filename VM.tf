@@ -9,15 +9,13 @@ terraform {
 
 provider "azurerm" {
   features {}
+}
   locals{
-      default_tags {
-    tags = {
+      default_tags = {
       Project     = "${var.project}"
       Environment = "${var.env}"
-      CreatedBy   = "${var.created_by}"
+      CreatedBy   = "${var.createdby}"
       Date        = "${var.date}"
-    }
-  }
   }
 }
 
@@ -45,6 +43,7 @@ resource "azurerm_network_interface" "vm_nic" {
     public_ip_address_id = azurerm_public_ip.vm.id
   }
 }
+
 
 ## NSG creation
 
@@ -77,10 +76,12 @@ resource "azurerm_network_security_rule" "Outbound" {
   protocol = "*"
   source_port_range = "*"
   destination_port_range = "*"
+  source_address_prefix = "*"
   destination_address_prefix = "*"
   resource_group_name = data.azurerm_resource_group.Ecom.name
   network_security_group_name = azurerm_network_security_group.NSG.name
 }
+
 
 ## Network intrerface association
 
@@ -89,8 +90,8 @@ resource "azurerm_network_interface_security_group_association" "nsg-nic-associa
   network_security_group_id = azurerm_network_security_group.NSG.id
 }
 
-##VM creation
 
+##VM creation
 resource "azurerm_linux_virtual_machine" "name" {
   name = "${var.az_vnet.name}-${var.Project}-${var.env}-VM"
   resource_group_name = data.azurerm_resource_group.Ecom.name
