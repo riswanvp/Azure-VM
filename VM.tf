@@ -22,6 +22,14 @@ provider "azurerm" {
 }
 
 
+## create public IP
+resource "azurerm_public_ip" "vm" {
+    name = "${var.az_vnet.name}-IP"
+    location = var.location
+    resource_group_name = data.azurerm_resource_group.Ecom.name
+    allocation_method = "Static"
+}
+
 ## Create NIC
 resource "azurerm_network_interface" "vm_nic" {
   name                = "vm-nic" 
@@ -32,15 +40,10 @@ resource "azurerm_network_interface" "vm_nic" {
     name                          = "internal"
     subnet_id                     = data.azurerm_subnet.public.id
     private_ip_address_allocation = "Dynamic"
-  }
-}
-## create public IP
 
-resource "azurerm_public_ip" "vm" {
-    name = "${var.az_vnet.name}-IP"
-    location = var.location
-    resource_group_name = data.azurerm_resource_group.Ecom.name
-    allocation_method = "Static"
+    ##Public Ip association
+    public_ip_address_id = azurerm_public_ip.vm.id
+  }
 }
 
 ## NSG creation
