@@ -48,7 +48,7 @@ resource "azurerm_network_interface" "vm_nic" {
 ## NSG creation
 
 resource "azurerm_network_security_group" "NSG" {
-  name =  "${var.az_vnet.name}-${var.Project}-${var.env}-nsg"
+  name =  "${var.az_vnet.name}-${var.project}-${var.env}-nsg"
   resource_group_name = data.azurerm_resource_group.Ecom.name
   location = data.azurerm_virtual_network.vnet.location
 }
@@ -93,7 +93,7 @@ resource "azurerm_network_interface_security_group_association" "nsg-nic-associa
 
 ##VM creation
 resource "azurerm_linux_virtual_machine" "name" {
-  name = "${var.az_vnet.name}-${var.Project}-${var.env}-VM"
+  name = "${var.az_vnet.name}-${var.project}-${var.env}-VM"
   resource_group_name = data.azurerm_resource_group.Ecom.name
   location = data.azurerm_virtual_network.vnet.location
   size = var.size
@@ -105,7 +105,7 @@ resource "azurerm_linux_virtual_machine" "name" {
   }
   network_interface_ids = [ azurerm_network_interface.vm_nic.id ]
   os_disk {
-    name = "${var.az_vnet.name}-${var.Project}-${var.env}-VM-OS-disk"
+    name = "${var.az_vnet.name}-${var.project}-${var.env}-VM-OS-disk"
     caching = "ReadWrite"
     storage_account_type = "Standard SSD ZRS"
   }
