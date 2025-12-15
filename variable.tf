@@ -1,18 +1,27 @@
-variable "Project" {
+variable "project" {
+    description = "project"
     type = string
     default = "webapp"
 }
 
 variable "env" {
+    description = "environment"
     type = string
     default = "prod"  
 }
 
 variable "createdby" {
+    description = "Enter the name who is creating the VM"
     type = string
     default = "Riswan"  
 }
 
+variable "date" {
+    description = "The date VM is created"
+    type = string
+    default = "date"
+  
+}
 
 variable "azurerm_resource_group" {
     description = "azure resources"
